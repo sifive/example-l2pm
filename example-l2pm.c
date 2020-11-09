@@ -8,11 +8,11 @@
 #include <metal/cache.h>
 #include <metal/drivers/sifive_ccache0.h>
 #include <metal/drivers/sifive_l2pf0.h>
-#include <metal/machine.h>
+#include <metal/platform.h>
 #include <stdio.h>
 
 /* Check for presence of SiFive L2 cache controller and PM counters */
-#if defined(METAL_SIFIVE_CCACHE0) && METAL_SIFIVE_CCACHE0_PERFMON_COUNTERS > 5
+#if defined(METAL_SIFIVE_CCACHE0) && METAL_SIFIVE_CCACHE0_0_PERFMON_COUNTERS > 5
 
 /* Macros to set event selector values */
 /* Capture L1 miss events.
@@ -85,7 +85,7 @@ static void mem_test() {
   volatile int readvalue;
 
   /* Flush out entire cache */
-  metal_dcache_l1_flush((uintptr_t)&__metal_boot_hart, 0);
+  metal_dcache_l1_flush(0);
 
   /* Set end memory address */
   end = (int *)(&metal_segment_heap_target_end - 16);
@@ -110,10 +110,6 @@ int main() {
   uint64_t count;
 
   PRINT("***L2 cache performance monitor counter demo***\n");
-
-  /* Initialize SiFive L2 cache controller */
-  if (sifive_ccache0_init() != 0)
-    return 1;
 
   sifive_ccache0_clr_pmevent_counter(L2PM_COUNTER0);
   /* Configure counter 0 to capture L1 miss events */
