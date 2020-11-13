@@ -5,6 +5,7 @@
  *  Example code to demonstrate usage of SiFive L2 performance monitor counters
  *  to capture L2 cache event logs.
  */
+#include <metal/cpu.h>
 #include <metal/cache.h>
 #include <metal/drivers/sifive_ccache0.h>
 #include <metal/drivers/sifive_l2pf0.h>
